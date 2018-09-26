@@ -1,0 +1,30 @@
+default: &default
+  adapter: postgresql
+  username: postgres
+  password:
+  host: <%= ENV.fetch('DB_HOST', 'db') %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  encoding: utf8
+  charset: utf8
+  port: 5432
+
+rds: &rds
+  database: <%= ENV['RDS_DB_NAME'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: <%= ENV['RDS_PORT'] %>
+
+development:
+  <<: *default
+  database: myfarm_development
+
+test:
+  <<: *default
+  database: myfarm_test
+
+production:
+  <<: *default
+  <<: *rds
+
